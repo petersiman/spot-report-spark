@@ -1,5 +1,5 @@
 
-var map;
+var map, myPosition;
 
 map = L.map('map').fitWorld();
 
@@ -11,10 +11,8 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 map.locate({setView: true, maxZoom: 16});
 
 function onLocationFound(e) {
-  $.get("/spots?neLat=" + e.bounds.getNorthEast().lat + "&neLon=" + e.bounds.getNorthEast().lng + "swLat=" + e.bounds.getSouthWest().lat + "&swLon=" + e.bounds.getSouthWest().lng, function(data){
-    console.log(data);
-    extractAndDrawSpots(data);
-  });
+  console.log("Location found...");
+  myPosition = e.latlng;
 }
 
 var extractAndDrawSpots = function(data){
@@ -25,7 +23,8 @@ var extractAndDrawSpots = function(data){
         $.get("/spot-stats/" + item.id, function(data){
           if (data) {
             var stats = JSON.parse(data);
-            marker.bindPopup(createStatsReport(stats));
+            var distance = myPosition.distanceTo([item.location.lat, item.location.lon]);
+            marker.bindPopup(createStatsReport(stats, distance));
             marker.openPopup();
           }
         });
@@ -33,15 +32,30 @@ var extractAndDrawSpots = function(data){
     });
   }
 
-  var createStatsReport = function(stats){
+  var createStatsReport = function(stats, distance){
     var lastReportDate = new Date(stats.lastReportDate.iMillis);
-    return `Sails from <span class="strong">${stats.lowerSailRange}</span>  to <span class="strong">${stats.upperSailRange}</span> m2` +
+    var stats =  `Sails from <span class="strong">${stats.lowerSailRange}</span>  to <span class="strong">${stats.upperSailRange}</span> m2` +
       `</br>  boards from  <span class="strong">${stats.lowerBoardRange} to <span class="strong">${stats.upperBoardRange}</span> litres 
-            </br> current average rating <span class="strong">${stats.currentRating}</span> </br> last report added: ${lastReportDate}`;
+            </br> current average rating <span class="strong">${stats.currentRating}</span> </br> last report added: ${lastReportDate} `;
+    if (distance < 1000) {
+      stats += `</br> <button>Add my report</button>`
+    }
+    return stats;
   };
 };
 
 map.on('locationfound', onLocationFound);
+
+map.on('moveend', moveEnd);
+
+function moveEnd(e){
+  console.log(e);
+  var bounds = e.target.getBounds();
+  $.get("/spots?neLat=" + bounds.getNorthEast().lat + "&neLon=" + bounds.getNorthEast().lng + "swLat=" + bounds.getSouthWest().lat + "&swLon=" + bounds.getSouthWest().lng, function(data){
+    console.log(data);
+    extractAndDrawSpots(data);
+  });
+}
 
 function onLocationError(e) {
   alert(e.message);
