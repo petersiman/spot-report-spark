@@ -23,7 +23,10 @@ var extractAndDrawSpots = function(data){
         $.get("/spot-stats/" + item.id, function(data){
           if (data) {
             var stats = JSON.parse(data);
-            var distance = myPosition.distanceTo([item.location.lat, item.location.lon]);
+            var distance = 9999999999;
+            if (myPosition) {
+              distance = myPosition.distanceTo([item.location.lat, item.location.lon]);
+            }
             marker.bindPopup(createStatsReport(stats, distance));
             marker.openPopup();
           }
@@ -34,13 +37,13 @@ var extractAndDrawSpots = function(data){
 
   var createStatsReport = function(stats, distance){
     var lastReportDate = new Date(stats.lastReportDate.iMillis);
-    var stats =  `Sails from <span class="strong">${stats.lowerSailRange}</span>  to <span class="strong">${stats.upperSailRange}</span> m2` +
+    var tooltipMessage =  `Sails from <span class="strong">${stats.lowerSailRange}</span>  to <span class="strong">${stats.upperSailRange}</span> m2` +
       `</br>  boards from  <span class="strong">${stats.lowerBoardRange} to <span class="strong">${stats.upperBoardRange}</span> litres 
             </br> current average rating <span class="strong">${stats.currentRating}</span> </br> last report added: ${lastReportDate} `;
-    if (distance < 1000) {
-      stats += `</br> <button>Add my report</button>`
-    }
-    return stats;
+    // if (distance < 1000) {
+      tooltipMessage += `</br> <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reportModal">Add report</button>`
+    // }
+    return tooltipMessage;
   };
 };
 
@@ -166,6 +169,21 @@ $(document).one("ajaxStop", function () {
   });
   $(".twitter-typeahead").css("position", "static");
   $(".twitter-typeahead").css("display", "block");
+});
+
+$(function() {
+  return $(".starrr").starrr();
+});
+
+$( document ).ready(function() {
+
+  $('#stars').on('starrr:change', function(e, value){
+    $('#count').html(value);
+  });
+
+  $('#stars-existing').on('starrr:change', function(e, value){
+    $('#count-existing').html(value);
+  });
 });
 
 

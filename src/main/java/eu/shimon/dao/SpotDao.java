@@ -25,4 +25,7 @@ public class SpotDao {
 				.build();
 	}
 
+	public static Spot create(Spot spot) {
+		return null;
+	}
 }

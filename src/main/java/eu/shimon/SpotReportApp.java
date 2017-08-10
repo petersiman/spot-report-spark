@@ -3,6 +3,7 @@ package eu.shimon;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.port;
+import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 import eu.shimon.dao.SpotDao;
 import eu.shimon.dao.SpotStatsDao;
+import eu.shimon.model.Spot;
 import eu.shimon.util.JsonUtil;
 import spark.ModelAndView;
 import spark.Request;
@@ -27,8 +29,10 @@ public class SpotReportApp {
 		get("/", (req, res) -> renderMap(req));
 		get("/hello", (req, res) -> "Hello World");
 		get("/spots", (req, res) -> SpotDao.findAllInBoudingBox(req.params("neLat"), req.params("neLon"), req.params("swLat"), req.params("swLon")), JsonUtil.json());
-		get("/spot/:id", (req, res) -> SpotDao.findOne(req.queryParams("id")), JsonUtil.json());
+		get("/spots/:id", (req, res) -> SpotDao.findOne(req.queryParams("id")), JsonUtil.json());
 		get("/spot-stats/:spotId", (req, res) -> SpotStatsDao.getSpotStats(req.queryParams("spotId")), JsonUtil.json());
+
+		post("/spots", ((request, response) -> SpotDao.create(Spot.builder().name(request.queryParams("name")).build())));
 	}
 
 	private static String renderMap(Request req) {

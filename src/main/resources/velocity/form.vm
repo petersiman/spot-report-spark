@@ -1,0 +1,59 @@
+<!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog"
+     aria-labelledby="reportModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add report for
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <form role="form">
+                    <label for="sailSizeInput">Size of sail you're using</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               id="sailSizeInput" placeholder="Sail size" aria-describedby="m2-addon"/>
+                        <span class="input-group-addon" id="m2-addon">m2</span>
+                    </div>
+                    <label for="boardMassInput">Board mass</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               id="boardMassInput" placeholder="Board mass" aria-describedby="litres-addon"/>
+                        <span class="input-group-addon" id="litres-addon">litres</span>
+                    </div>
+
+                    <label for="stars-existing">Rating</label>
+                    <div class="input-group">
+                        <div id="stars-existing" class="starrr" data-rating="4"></div>
+                        You gave a rating of <span id="count-existing">4</span> star(s)
+                    </div>
+
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
