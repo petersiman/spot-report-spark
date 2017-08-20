@@ -3,6 +3,32 @@ var map, myPosition;
 
 map = L.map('map').fitWorld();
 
+L.easyButton({
+  position:  'bottomright',
+  states : [
+    {
+      icon : 'fa-lg fa-map-marker',
+      onClick : function(btn, map){
+        createDraggableMarker();
+      },
+      title : 'Add spot'
+    }
+  ]
+}).addTo(map);
+
+function createDraggableMarker() {
+  marker = new L.marker(map.getCenter(), {draggable:'true'});
+  marker.on('dragend', function(event){
+    var marker = event.target;
+    var position = marker.getLatLng();
+    marker.setLatLng(new L.LatLng(position.lat, position.lng),{draggable:'true'});
+    map.panTo(new L.LatLng(position.lat, position.lng));
+    marker.bindPopup(`<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#spotModal">Add spot here!</button>`);
+    marker.openPopup();
+  });
+  map.addLayer(marker);
+}
+
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -54,7 +80,7 @@ map.on('moveend', moveEnd);
 function moveEnd(e){
   console.log(e);
   var bounds = e.target.getBounds();
-  $.get("/spots?neLat=" + bounds.getNorthEast().lat + "&neLon=" + bounds.getNorthEast().lng + "swLat=" + bounds.getSouthWest().lat + "&swLon=" + bounds.getSouthWest().lng, function(data){
+  $.get("/spot?neLat=" + bounds.getNorthEast().lat + "&neLon=" + bounds.getNorthEast().lng + "&swLat=" + bounds.getSouthWest().lat + "&swLon=" + bounds.getSouthWest().lng, function(data){
     console.log(data);
     extractAndDrawSpots(data);
   });

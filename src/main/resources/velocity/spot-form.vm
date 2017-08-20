@@ -1,0 +1,50 @@
+<!-- Modal -->
+<div class="modal fade" id="spotModal" tabindex="-1" role="dialog"
+     aria-labelledby="spotModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add new spot
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <form role="form">
+                    <label for="spotNameInput">Spot name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               id="spotNameInput" placeholder="Spot name"/>
+                    </div>
+                    <label for="spotDescInput">Spot description</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               id="spotDescInput" placeholder="Spot description"/>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

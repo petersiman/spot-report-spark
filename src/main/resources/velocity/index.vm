@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/starrr.css">
 
@@ -72,7 +73,8 @@
 
 <div id="container">
     <div id="map"></div>
-    #parse("/velocity/form.vm")
+    #parse("/velocity/report-form.vm")
+    #parse("/velocity/spot-form.vm")
 </div>
 <div id="loading">
     <div class="loading-indicator">
@@ -258,6 +260,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
 <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
 <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
 <script src="/js/app.js"></script>

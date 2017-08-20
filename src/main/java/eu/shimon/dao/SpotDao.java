@@ -1,31 +1,46 @@
 package eu.shimon.dao;
 
-import java.util.Collections;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Shape;
+
+import eu.shimon.form.SpotForm;
 import eu.shimon.model.Location;
 import eu.shimon.model.Spot;
 
 public class SpotDao {
 
-	public static List<Spot> findAllInBoudingBox(String neLat, String neLon, String swLat, String swLon) {
-		return Collections.singletonList(findOne("2"));
+	private Datastore datastore;
+
+	public SpotDao(Datastore datastore) {
+		this.datastore = datastore;
 	}
 
-	public static Spot findOne(String id) {
-		Location location = Location.builder()
-				.lat(48.8555998)
-				.lon(16.0552128)
-				.build();
-		return Spot.builder()
-				.id(id)
-				.name("spot name 1")
-				.description("spot description")
-				.location(location)
-				.build();
+	public List<Spot> findAllInBoudingBox(String neLat, String neLon, String swLat, String swLon) {
+		return datastore.createQuery(Spot.class)
+				.field("location")
+				.within(Shape.box(
+						new Shape.Point(Double.parseDouble(neLat), Double.parseDouble(neLon)),
+						new Shape.Point(Double.parseDouble(swLat), Double.parseDouble(swLon))))
+				.asList();
 	}
 
-	public static Spot create(Spot spot) {
-		return null;
+	public Spot findOne(String id) {
+		return datastore.createQuery(Spot.class)
+				.field("_id")
+				.equal(id)
+				.get();
+	}
+
+	public Spot create(SpotForm spotForm) {
+		Spot spot = new Spot();
+		spot.setId(new ObjectId().toHexString());
+		spot.setName(spotForm.getName());
+		spot.setDescription(spotForm.getDescription());
+		spot.setLocation(new Location(spotForm.getLat(), spotForm.getLon()));
+		datastore.save(spot);
+		return spot;
 	}
 }

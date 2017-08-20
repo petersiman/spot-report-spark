@@ -9,8 +9,12 @@ import static spark.Spark.staticFiles;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 import eu.shimon.dao.SpotDao;
 import eu.shimon.dao.SpotStatsDao;
+import eu.shimon.db.DatabaseHelper;
+import eu.shimon.form.SpotForm;
 import eu.shimon.model.Spot;
 import eu.shimon.util.JsonUtil;
 import spark.ModelAndView;
@@ -20,7 +24,14 @@ import spark.Route;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class SpotReportApp {
+
+	private static SpotDao spotDao;
+	private static DatabaseHelper databaseHelper = new DatabaseHelper();
+	private static Gson gson = new Gson();
+
 	public static void main(String[] args) {
+		spotDao = new SpotDao(databaseHelper.getDataStore());
+
 		exception(Exception.class, (e, req, res) -> e.printStackTrace()); // print all exceptions
 		staticFiles.location("/public");
 
@@ -28,11 +39,11 @@ public class SpotReportApp {
 
 		get("/", (req, res) -> renderMap(req));
 		get("/hello", (req, res) -> "Hello World");
-		get("/spots", (req, res) -> SpotDao.findAllInBoudingBox(req.params("neLat"), req.params("neLon"), req.params("swLat"), req.params("swLon")), JsonUtil.json());
-		get("/spots/:id", (req, res) -> SpotDao.findOne(req.queryParams("id")), JsonUtil.json());
+		get("/spot", (req, res) -> spotDao.findAllInBoudingBox(req.queryParams("neLat"), req.queryParams("neLon"), req.queryParams("swLat"), req.queryParams("swLon")), JsonUtil.json());
+		get("/spot/:id", (req, res) -> spotDao.findOne(req.queryParams("id")), JsonUtil.json());
 		get("/spot-stats/:spotId", (req, res) -> SpotStatsDao.getSpotStats(req.queryParams("spotId")), JsonUtil.json());
 
-		post("/spots", ((request, response) -> SpotDao.create(Spot.builder().name(request.queryParams("name")).build())));
+		post("/spot", "application/json", ((request, response) -> spotDao.create(gson.fromJson(request.body(), SpotForm.class))));
 	}
 
 	private static String renderMap(Request req) {
