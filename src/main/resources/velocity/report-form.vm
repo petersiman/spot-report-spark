@@ -14,21 +14,22 @@
                     Add report for
                 </h4>
             </div>
+            <form role="form" target="/spot/:spotId/report" class="modal-form">
 
             <!-- Modal Body -->
-            <div class="modal-body">
+                <div class="modal-body">
 
-                <form role="form">
+                    <input type="hidden" name="spotId" value=""/>
                     <label for="sailSizeInput">Size of sail you're using</label>
                     <div class="input-group">
                         <input type="text" class="form-control"
-                               id="sailSizeInput" placeholder="Sail size" aria-describedby="m2-addon"/>
+                               id="sailSizeInput" name="sailSize" placeholder="Sail size" aria-describedby="m2-addon"/>
                         <span class="input-group-addon" id="m2-addon">m2</span>
                     </div>
                     <label for="boardMassInput">Board mass</label>
                     <div class="input-group">
                         <input type="text" class="form-control"
-                               id="boardMassInput" placeholder="Board mass" aria-describedby="litres-addon"/>
+                               id="boardMassInput" name="boardMass" placeholder="Board mass" aria-describedby="litres-addon"/>
                         <span class="input-group-addon" id="litres-addon">litres</span>
                     </div>
 
@@ -36,24 +37,23 @@
                     <div class="input-group">
                         <div id="stars-existing" class="starrr" data-rating="4"></div>
                         You gave a rating of <span id="count-existing">4</span> star(s)
+                        <input type="hidden" id="starsCountInput" name="stars"/>
                     </div>
 
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                </div>
 
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Save changes
+                    </button>
+                </div>
+            </form>
 
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                    Save changes
-                </button>
-            </div>
         </div>
     </div>
 </div>

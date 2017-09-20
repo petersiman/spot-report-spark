@@ -15,10 +15,9 @@
                 </h4>
             </div>
 
-            <!-- Modal Body -->
-            <div class="modal-body">
-
-                <form role="form">
+            <form role="form" class="modal-form">
+                <!-- Modal Body -->
+                <div class="modal-body">
                     <label for="spotNameInput">Spot name</label>
                     <div class="input-group">
                         <input type="text" class="form-control"
@@ -29,22 +28,20 @@
                         <input type="text" class="form-control"
                                id="spotDescInput" placeholder="Spot description"/>
                     </div>
+                </div>
 
-                </form>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Save changes
+                    </button>
+                </div>
+            </form>
 
-
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                    Save changes
-                </button>
-            </div>
         </div>
     </div>
 </div>

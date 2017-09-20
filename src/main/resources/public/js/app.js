@@ -61,13 +61,13 @@ var extractAndDrawSpots = function(data){
     });
   }
 
-  var createStatsReport = function(stats, distance){
+  var createStatsReport = function( stats, distance){
     var lastReportDate = new Date(stats.lastReportDate.iMillis);
     var tooltipMessage =  `Sails from <span class="strong">${stats.lowerSailRange}</span>  to <span class="strong">${stats.upperSailRange}</span> m2` +
       `</br>  boards from  <span class="strong">${stats.lowerBoardRange} to <span class="strong">${stats.upperBoardRange}</span> litres 
             </br> current average rating <span class="strong">${stats.currentRating}</span> </br> last report added: ${lastReportDate} `;
     // if (distance < 1000) {
-      tooltipMessage += `</br> <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reportModal">Add report</button>`
+      tooltipMessage += `</br> <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#reportModal" data-spot-id="${stats.spotId}">Add report</button>`
     // }
     return tooltipMessage;
   };
@@ -209,6 +209,28 @@ $( document ).ready(function() {
 
   $('#stars-existing').on('starrr:change', function(e, value){
     $('#count-existing').html(value);
+    $('#starsCountInputr').val(value);
+  });
+
+  $("form.modal-form").on("submit", function(e){
+
+    var objectifyForm = function(formArray) {//serialize data function
+
+      var returnArray = {};
+      for (var i = 0; i < formArray.length; i++){
+        returnArray[formArray[i]['name']] = formArray[i]['value'];
+      }
+      return returnArray;
+    }
+
+    e.preventDefault();
+    var formData = objectifyForm(e.target);
+    console.log("Form submitted.");
+    console.log(formData);
+
+    $.post($(e.target).attr('target'), formData, function(){
+      console.log("Form sent successfully.");
+    });
   });
 });
 

@@ -7,6 +7,7 @@ import eu.shimon.model.SpotStats;
 public class SpotStatsDao {
 
 	public static SpotStats getSpotStats(String spotId) {
+		//TODO agregation throughout the spot report here
 		return SpotStats.builder()
 				.spotId(spotId)
 				.lowerBoardRange(92)
