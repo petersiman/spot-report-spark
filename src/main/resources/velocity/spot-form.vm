@@ -15,19 +15,21 @@
                 </h4>
             </div>
 
-            <form role="form" class="modal-form">
+            <form role="form" class="modal-form" target="/spot">
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <label for="spotNameInput">Spot name</label>
                     <div class="input-group">
-                        <input type="text" class="form-control"
+                        <input type="text" class="form-control" name="name"
                                id="spotNameInput" placeholder="Spot name"/>
                     </div>
                     <label for="spotDescInput">Spot description</label>
                     <div class="input-group">
-                        <input type="text" class="form-control"
+                        <input type="text" class="form-control" name="description"
                                id="spotDescInput" placeholder="Spot description"/>
                     </div>
+                    <input type="hidden" id="latInput" name="lat" value=""/>
+                    <input type="hidden" id="lonInput" name="lon" value=""/>
                 </div>
 
                 <!-- Modal Footer -->

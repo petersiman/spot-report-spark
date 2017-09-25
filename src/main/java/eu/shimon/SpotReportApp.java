@@ -12,10 +12,12 @@ import java.util.Map;
 import com.google.gson.Gson;
 
 import eu.shimon.dao.SpotDao;
+import eu.shimon.dao.SpotReportDao;
 import eu.shimon.dao.SpotStatsDao;
 import eu.shimon.db.DatabaseHelper;
 import eu.shimon.form.SpotForm;
 import eu.shimon.model.Spot;
+import eu.shimon.model.SpotReport;
 import eu.shimon.util.JsonUtil;
 import spark.ModelAndView;
 import spark.Request;
@@ -26,11 +28,13 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class SpotReportApp {
 
 	private static SpotDao spotDao;
+	private static SpotReportDao spotReportDao;
 	private static DatabaseHelper databaseHelper = new DatabaseHelper();
 	private static Gson gson = new Gson();
 
 	public static void main(String[] args) {
 		spotDao = new SpotDao(databaseHelper.getDataStore());
+		spotReportDao = new SpotReportDao((databaseHelper.getDataStore()));
 
 		exception(Exception.class, (e, req, res) -> e.printStackTrace()); // print all exceptions
 		staticFiles.location("/public");
@@ -44,6 +48,9 @@ public class SpotReportApp {
 		get("/spot-stats/:spotId", (req, res) -> SpotStatsDao.getSpotStats(req.queryParams("spotId")), JsonUtil.json());
 
 		post("/spot", "application/json", ((request, response) -> spotDao.create(gson.fromJson(request.body(), SpotForm.class))));
+		post(
+				"/spot/:spotId/report", "application/json",
+				(((request, response) -> spotReportDao.create(gson.fromJson(request.body(), SpotReport.class)))));
 	}
 
 	private static String renderMap(Request req) {
